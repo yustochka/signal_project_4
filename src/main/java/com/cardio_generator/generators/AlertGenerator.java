@@ -4,16 +4,31 @@ import java.util.Random;
 
 import com.cardio_generator.outputs.OutputStrategy;
 
+/**
+ * The ECGDataGenerator class generates ECG data for patients.
+ */
 public class AlertGenerator implements PatientDataGenerator {
     // Changed constant name from random_generator to RANDOM_GENERATOR (UPPER_SNAKE_CASE)
     public static final Random RANDOM_GENERATOR = new Random();
     // Changed variable name from AlertStates to alertStates (camelCase)
     private boolean[] alertStates; // false = resolved, true = pressed
 
+
+    /**
+     * Constructs an ECGDataGenerator for the specified number of patients.
+     *
+     * @param patientCount The number of patients.
+     */
     public AlertGenerator(int patientCount) {
         alertStates = new boolean[patientCount + 1];
     }
 
+    /**
+     * Generates ECG data for a specific patient.
+     *
+     * @param patientId The ID of the patient.
+     * @param outputStrategy The output strategy to use for generating data.
+     */
     @Override
     public void generate(int patientId, OutputStrategy outputStrategy) {
         try {
