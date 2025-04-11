@@ -67,7 +67,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 
+## UML Models
 
+This project includes UML diagrams for each major subsystem of the CHMS (Connected Healthcare Monitoring System). These diagrams illustrate the design structure, class relationships, and responsibilities of key components.
+
+The following subsystems are modeled:
+- Alert Generation System
+- Data Storage System
+- Patient Identification System
+- Data Access Layer
+
+You can find all the UML diagrams and their accompanying explanations in the [`uml_models/`](./uml_models) directory.
 
 ## Project Members
 - Student ID: 6386629
