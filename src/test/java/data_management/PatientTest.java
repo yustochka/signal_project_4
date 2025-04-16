@@ -17,16 +17,15 @@ public class PatientTest {
     @BeforeEach
     void setUp() {
         patient = new Patient(1234);
-        // Use addRecord (not new PatientRecord)
-        patient.addRecord(80.0, "HeartRate", 1714376400000L); // 10:00
-        patient.addRecord(85.0, "HeartRate", 1714376700000L); // 10:05
-        patient.addRecord(90.0, "HeartRate", 1714377000000L); // 10:10
+        patient.addRecord(80.0, "HeartRate", 1714384800000L); // 10:00
+        patient.addRecord(85.0, "HeartRate", 1714385100000L); // 10:05
+        patient.addRecord(90.0, "HeartRate", 1714385400000L); // 10:10
     }
 
     @Test
     void testGetRecordsInTimeRange() {
         // Get records between 10:02 and 10:08
-        List<PatientRecord> filtered = patient.getRecords(1714376520000L, 1714376880000L);
+        List<PatientRecord> filtered = patient.getRecords(1714384920000L, 1714385280000L);
         assertEquals(1, filtered.size());
         assertEquals(85.0, filtered.get(0).getMeasurementValue());
     }
@@ -34,14 +33,14 @@ public class PatientTest {
     @Test
     void testGetRecordsAllMatching() {
         // Range includes all
-        List<PatientRecord> filtered = patient.getRecords(1714376400000L, 1714377000000L);
+        List<PatientRecord> filtered = patient.getRecords(1714384800000L, 1714389060000L);
         assertEquals(3, filtered.size());
     }
 
     @Test
     void testGetRecordsNoneMatching() {
-        // Range before all records
-        List<PatientRecord> filtered = patient.getRecords(1714370000000L, 1714376000000L);
+        // Range with no records
+        List<PatientRecord> filtered = patient.getRecords(1714389060000L, 1714389060000L);
         assertTrue(filtered.isEmpty());
     }
 }
