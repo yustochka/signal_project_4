@@ -23,7 +23,14 @@ public class Patient {
         this.patientId = patientId;
         this.patientRecords = new ArrayList<>();
     }
-
+    /**
+     * Returns the unique identifier for the patient.
+     *
+     * @return the patient ID
+     */
+    public int getPatientId() {
+        return patientId;
+    }
     /**
      * Adds a new record to this patient's list of medical records.
      * The record is created with the specified measurement value, record type, and
