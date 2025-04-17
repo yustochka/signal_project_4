@@ -25,7 +25,7 @@ class AlertGeneratorTest {
     }
 
     @Test
-    void testEvaluateData_BloodPressureTrendAlert() {
+    void testEvaluateData_IncreasingBloodPressureTrendAlert() {
         Patient patient = new Patient(1);
         dataStorage.addPatientData(1, 100, "SystolicBP", 1000);
         dataStorage.addPatientData(1, 115, "SystolicBP", 2000);
@@ -37,6 +37,19 @@ class AlertGeneratorTest {
         List<Alert> alerts = alertGenerator.getTriggeredAlerts();
         assertEquals(1, alerts.size());
         assertEquals("Increasing Blood Pressure Trend", alerts.get(0).getCondition());;
+    }
+    @Test
+    void testEvaluateData_DecreasingBloodPressureTrendAlert() {
+        Patient patient = new Patient(7);
+        dataStorage.addPatientData(7, 130, "SystolicBP", 1000);
+        dataStorage.addPatientData(7, 115, "SystolicBP", 2000);
+        dataStorage.addPatientData(7, 100, "SystolicBP", 3000);
+
+        alertGenerator.evaluateData(patient);
+
+        List<Alert> alerts = alertGenerator.getTriggeredAlerts();
+        assertEquals(1, alerts.size());
+        assertEquals("Decreasing Blood Pressure Trend", alerts.get(0).getCondition());
     }
 
     @Test
@@ -60,10 +73,21 @@ class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
 
         List<Alert> alerts = alertGenerator.getTriggeredAlerts();
-        assertEquals(1, alerts.size(), "Expected one alert for low blood saturation.");
-        assertEquals("Low Blood Saturation", alerts.get(0).getCondition(), "Alert condition mismatch.");
+        assertEquals(1, alerts.size());
+        assertEquals("Low Blood Saturation", alerts.get(0).getCondition());
     }
+    @Test
+    void testEvaluateData_RapidSaturationDropAlert() {
+        Patient patient = new Patient(6);
+        dataStorage.addPatientData(6, 97, "Saturation", 1000);
+        dataStorage.addPatientData(6, 91, "Saturation", 600000); // Drop of 6% within 10 minutes
 
+        alertGenerator.evaluateData(patient);
+
+        List<Alert> alerts = alertGenerator.getTriggeredAlerts();
+        assertEquals(2, alerts.size());
+        assertEquals("Rapid Blood Saturation Drop", alerts.get(1).getCondition());
+    }
     @Test
     void testEvaluateData_HypotensiveHypoxemiaAlert() {
         Patient patient = new Patient(4);
