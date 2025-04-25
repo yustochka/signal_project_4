@@ -145,6 +145,7 @@ public class AlertGenerator {
         // Implementation might involve logging the alert or notifying staff
         triggeredAlerts.add(alert);
     }
+
     /**
      * Retrieves the list of triggered alerts.
      *
