@@ -1,4 +1,4 @@
-package outputs;
+package cardio_generators;
 
 
 import com.cardio_generator.HealthDataSimulator;
