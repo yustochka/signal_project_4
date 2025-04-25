@@ -31,11 +31,38 @@ import java.util.ArrayList;
  */
 public class HealthDataSimulator {
 
+    private static HealthDataSimulator instance; // Singleton instance
     private static int patientCount = 50; // Default number of patients
     private static ScheduledExecutorService scheduler;
     private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
     private static final Random random = new Random();
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private HealthDataSimulator() {}
+
+    /**
+     * Returns the singleton instance of HealthDataSimulator.
+     *
+     * @return The singleton instance of HealthDataSimulator.
+     */
+    public static synchronized HealthDataSimulator getInstance() {
+        if (instance == null) {
+            instance = new HealthDataSimulator();
+        }
+        return instance;
+    }
+
+    /**
+     * Sets the singleton instance of HealthDataSimulator.
+     * This method is used for testing purposes to use a mock or alternative instance.
+     *
+     * @param testInstance The test instance of HealthDataSimulator to set.
+     */
+    public static synchronized void setInstance(HealthDataSimulator testInstance) {
+        instance = testInstance;
+    }
 
     /**
      * The main method to start the health data simulation.
@@ -44,7 +71,10 @@ public class HealthDataSimulator {
      * @throws IOException If an I/O error occurs.
      */
     public static void main(String[] args) throws IOException {
+        getInstance().run(args);
+    }
 
+    private void run(String[] args) throws IOException {
         parseArguments(args);
 
         scheduler = Executors.newScheduledThreadPool(patientCount * 4);
@@ -54,6 +84,7 @@ public class HealthDataSimulator {
 
         scheduleTasksForPatients(patientIds);
     }
+
 
     /**
      * Parses command line arguments to configure the simulation.

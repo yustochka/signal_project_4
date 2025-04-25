@@ -13,14 +13,39 @@ import com.alerts.AlertGenerator;
  * patient IDs.
  */
 public class DataStorage {
-    private Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
+
+    private static DataStorage instance;
+    protected final Map<Integer, Patient> patientMap;// Stores patient objects indexed by their unique patient ID.
 
     /**
      * Constructs a new instance of DataStorage, initializing the underlying storage
      * structure.
      */
-    public DataStorage() {
+    protected DataStorage() {
         this.patientMap = new HashMap<>();
+    }
+
+    /**
+     * Returns the singleton instance of DataStorage.
+     * This method ensures that only one instance of DataStorage exists in the application.
+     *
+     * @return the singleton instance of DataStorage
+     */
+    public static synchronized DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
+    }
+
+    /**
+     * Sets the singleton instance of DataStorage.
+     * This method is used for testing purposes to use a mock or alternative instance.
+     *
+     * @param testInstance the test instance of DataStorage to set
+     */
+    public static synchronized void setInstance(DataStorage testInstance) {
+        instance = testInstance;
     }
 
     /**

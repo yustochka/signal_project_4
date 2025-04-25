@@ -31,7 +31,7 @@ class DataReaderTest {
                 "1001,190.0,SystolicBP,1714376120000"
         ));
 
-        dataStorage = new DataStorage();
+        dataStorage = new DataStorage() {};
         dataReader = new FileDataReader(tempFilePath.toString()); // You'll implement this
     }
 

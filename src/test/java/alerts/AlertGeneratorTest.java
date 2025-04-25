@@ -20,7 +20,8 @@ class AlertGeneratorTest {
 
     @BeforeEach
     void setUp() {
-        dataStorage = new InMemoryDataStorage();
+        DataStorage.setInstance(new InMemoryDataStorage());
+        dataStorage = DataStorage.getInstance();
         alertGenerator = new AlertGenerator(dataStorage);
     }
 
@@ -112,7 +113,6 @@ class AlertGeneratorTest {
         assertEquals(1, alerts.size());
         assertEquals("Abnormal ECG Data", alerts.get(0).getCondition());    }
 
-    // In-memory implementation of DataStorage for testing
     static class InMemoryDataStorage extends DataStorage {
         private final List<PatientRecord> records = new ArrayList<>();
 
@@ -129,6 +129,7 @@ class AlertGeneratorTest {
             return filteredRecords;
         }
 
+        @Override
         public void addPatientData(int patientId, double measurementValue, String recordType, long timestamp) {
             records.add(new PatientRecord(patientId, measurementValue, recordType, timestamp));
         }
