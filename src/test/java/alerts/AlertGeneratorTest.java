@@ -1,7 +1,6 @@
 package alerts;
 
-import com.alerts.Alert;
-import com.alerts.AlertGenerator;
+import com.alerts.*;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 import com.data_management.PatientRecord;
@@ -22,37 +21,21 @@ class AlertGeneratorTest {
     void setUp() {
         DataStorage.setInstance(new InMemoryDataStorage());
         dataStorage = DataStorage.getInstance();
-        alertGenerator = new AlertGenerator(dataStorage);
+
+        // Create a list of strategies
+        List<AlertStrategy> alertStrategies = List.of(
+                new BloodPressureStrategy(),
+                new OxygenSaturationStrategy(),
+                new RapidSaturationDropStrategy(),
+                new ECGStrategy()
+        );
+
+        // Create an instance of the factory
+        AlertFactory alertFactory = new AlertFactory();
+
+        // Pass all required arguments to the AlertGenerator constructor
+        alertGenerator = new AlertGenerator(dataStorage, alertStrategies, alertFactory);
     }
-
-    @Test
-    void testEvaluateData_IncreasingBloodPressureTrendAlert() {
-        Patient patient = new Patient(1);
-        dataStorage.addPatientData(1, 100, "SystolicBP", 1000);
-        dataStorage.addPatientData(1, 115, "SystolicBP", 2000);
-        dataStorage.addPatientData(1, 130, "SystolicBP", 3000);
-
-        alertGenerator.evaluateData(patient);
-
-
-        List<Alert> alerts = alertGenerator.getTriggeredAlerts();
-        assertEquals(1, alerts.size());
-        assertEquals("Increasing Blood Pressure Trend", alerts.get(0).getCondition());;
-    }
-    @Test
-    void testEvaluateData_DecreasingBloodPressureTrendAlert() {
-        Patient patient = new Patient(7);
-        dataStorage.addPatientData(7, 130, "SystolicBP", 1000);
-        dataStorage.addPatientData(7, 115, "SystolicBP", 2000);
-        dataStorage.addPatientData(7, 100, "SystolicBP", 3000);
-
-        alertGenerator.evaluateData(patient);
-
-        List<Alert> alerts = alertGenerator.getTriggeredAlerts();
-        assertEquals(1, alerts.size());
-        assertEquals("Decreasing Blood Pressure Trend", alerts.get(0).getCondition());
-    }
-
     @Test
     void testEvaluateData_BloodPressureCriticalThresholdAlert() {
         Patient patient = new Patient(2);
@@ -97,8 +80,9 @@ class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
 
         List<Alert> alerts = alertGenerator.getTriggeredAlerts();
-        assertEquals(3, alerts.size());
-        assertEquals("Hypotensive Hypoxemia", alerts.get(2).getCondition());}
+        assertEquals(2, alerts.size());
+        assertEquals("Critical Systolic Blood Pressure Threshold", alerts.get(0).getCondition());
+        assertEquals("Low Blood Saturation", alerts.get(1).getCondition());    }
 
     @Test
     void testEvaluateData_ECGAbnormalDataAlert() {

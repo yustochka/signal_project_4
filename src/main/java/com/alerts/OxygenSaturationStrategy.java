@@ -12,6 +12,6 @@ public class OxygenSaturationStrategy implements AlertStrategy {
                 .anyMatch(r -> r.getMeasurementValue() < 92);
     }
     public String getCondition() {
-        return "Critical Oxygen Saturation Drop";
+        return "Low Blood Saturation";
     }
 }
