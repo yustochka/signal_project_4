@@ -12,7 +12,7 @@ import java.net.URI;
  * It implements the DataReader interface and extends WebSocketClient to handle WebSocket communication.
  */
 public class WebSocketDataReader extends WebSocketClient implements DataReader {
-    private DataStorage dataStorage;
+    public DataStorage dataStorage;
 
     /**
      * Constructs a WebSocketDataReader that connects to the given server URI.
